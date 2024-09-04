@@ -8,12 +8,14 @@ import styles from "./Login.module.scss";
 import { useState } from "react";
 import axios from "../../axios";
 import cookies from "js-cookie";
+import {useNavigate} from 'react-router-dom'
 
 export const Registration = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +27,7 @@ export const Registration = () => {
       });
 
       cookies.set("token", responce.data.token, { expires: 1 });
+      navigate('/');
     } catch (error) {
       setError(error);
     }

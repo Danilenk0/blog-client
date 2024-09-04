@@ -3,21 +3,25 @@ import Button from '@mui/material/Button';
 import {Link} from 'react-router-dom'
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
+import cookie from 'js-cookie'
+import {useNavigate} from 'react-router-dom'
 
 export const Header = () => {
-  const isAuth = false;
-
-  const onClickLogout = () => {};
+  const navigation = useNavigate()
+  const onClickLogout = () => {
+    cookie.remove("token");
+    navigation("/login");
+  };
 
   return (
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
           <a className={styles.logo} href="/">
-            <div>ARCHAKOV BLOG</div>
+            <div>MIHAIL BLOG</div>
           </a>
           <div className={styles.buttons}>
-            {isAuth ? (
+            {cookie.get('token') ? (
               <>
                 <Link to="/posts/create">
                   <Button variant="contained">Написать статью</Button>

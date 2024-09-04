@@ -6,17 +6,28 @@ import { Post } from "../components/Post";
 import { TagsBlock } from "../components/TagsBlock";
 import { CommentsBlock } from "../components/CommentsBlock";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "../axios";
+import cookie from 'js-cookie'
 
 export const Home = () => {
   const [posts, setPosts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/posts");
+        const token = cookie.get('token')
+        if(!token){
+          navigate('/register')
+        }
+        const response = await axios.get("/posts",{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        });
         setPosts(response.data.posts);
       } catch (err) {
         setError("Ошибка при загрузке данных");
