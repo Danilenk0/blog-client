@@ -61,7 +61,7 @@ export const Home = () => {
                 commentsCount={3}
                 tags={["one", "two"]}
                 isLoading={false}
-                isEditing={true}
+                isEditable={true}
               />
             ))
           )}
