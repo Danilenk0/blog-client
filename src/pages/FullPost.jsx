@@ -5,6 +5,7 @@ import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 import { useEffect, useState } from "react";
 import axios from "../axios";
+import cookie from 'js-cookie'
 
 export const FullPost = () => {
   const { id } = useParams();
@@ -15,7 +16,12 @@ export const FullPost = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/posts/${id}`);
+        const token = cookie.get('token')
+        const response = await axios.get(`/posts/${id}`, {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        });
         setPost(response.data);
       } catch (error) {
         setError("Ошибка при загрузке данных");

@@ -23,7 +23,8 @@ export const Login = () => {
         password,
       });
 
-      cookie.set("token", responce.data.token,{expires:1});
+      cookie.set("token", responce.data.token, { expires: 1 });
+
       navigate("/");
     } catch (error) {}
   };

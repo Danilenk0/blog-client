@@ -14,6 +14,7 @@ export const Home = () => {
   const [posts, setPosts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userId, setUserid] = useState(null)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +24,19 @@ export const Home = () => {
         if(!token){
           navigate('/register')
         }
-        const response = await axios.get("/posts",{
-          headers:{
+        const responsePosts = await axios.get("/posts", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const responceMe = await axios.get('/auth/me',{
+          headers: {
             Authorization:`Bearer ${token}`
           }
-        });
-        setPosts(response.data.posts);
+        })
+        
+        setPosts(responsePosts.data.posts);
+        setUserid(responceMe.data.user._id);
       } catch (err) {
         setError("Ошибка при загрузке данных");
       } finally {
@@ -70,9 +78,9 @@ export const Home = () => {
                 createdAt={item.createdAt.toString().slice(0, 10)}
                 viewsCount={item.viewsCount}
                 commentsCount={3}
-                tags={["one", "two"]}
+                tags={item.tags}
                 isLoading={false}
-                isEditable={true}
+                isEditable={userId == item['user']._id}
               />
             ))
           )}
